@@ -134,5 +134,3 @@ fi
 
 %postun
 %systemd_postun_with_restart tlp.service
-
-%changelog
