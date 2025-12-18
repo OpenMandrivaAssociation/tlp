@@ -1,33 +1,35 @@
 Name:		tlp
-Version:	1.8.0
-Release:	2
+Version:	1.9.0
+Release:	1
 Source0:	https://github.com/linrunner/tlp/archive/%{version}/TLP-%{version}.tar.gz
 Summary:	Optimize Linux Laptop Battery Life
 URL:		https://github.com/linrunner/tlp
-License:	GPLv2+
+License:	GPL-2.0-or-later
 Group:		System/Utils
 BuildRequires:	make
-BuildRequires:  systemd
-Requires:   hdparm
-Requires:   gawk
-Requires:   grep
-Requires:   iw
-Requires:   pciutils
-Requires:   rfkill
-Requires:   sed
-Requires:   udev
-Requires:   usbutils
-Requires:   util-linux
-Recommends: ethtool
-Recommends: smartmontools
-Recommends: dkms-tp_smapi
+BuildRequires:	systemd
+BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(appstream-glib)
+Requires:	hdparm
+Requires:	gawk
+Requires:	grep
+Requires:	iw
+Requires:	pciutils
+Requires:	rfkill
+Requires:	sed
+Requires:	udev
+Requires:	usbutils
+Requires:	util-linux
+Recommends:	ethtool
+Recommends:	smartmontools
+Recommends:	dkms-tp_smapi
 ###################################
-Conflicts:  auto-cpufreq
-Conflicts:  laptop-mode-tools
-Conflicts:  power-profiles-daemon
-Conflicts:  tuned
+Conflicts:	auto-cpufreq
+Conflicts:	laptop-mode-tools
+Conflicts:	power-profiles-daemon
+Conflicts:	tuned
 ###################################
-BuildArch:  noarch
+BuildArch:	noarch
 
 %description
 TLP is a feature-rich command line utility for Linux, saving laptop
@@ -41,10 +43,10 @@ Settings are organized into two profiles, enabling you to adjust between
 savings and performance independently for battery (BAT) and AC operation.
 
 %package rdw
-Summary:    Radio Device Wizard for tlp
-Requires:   %{name} = %{version}-%{release}
-Requires:   networkmanager
-BuildArch:  noarch
+Summary:	Radio Device Wizard for tlp
+Requires:	%{name} = %{version}-%{release}
+Requires:	networkmanager
+BuildArch:	noarch
 
 %description rdw
 The Radio Device Wizard provides the capability to enable or disable
@@ -84,7 +86,16 @@ make install-man-rdw DESTDIR=%{buildroot}
 
 
 %files
-%{_bindir}/*
+%{_bindir}/bluetooth
+%{_bindir}/nfc
+%{_bindir}/run-on-ac
+%{_bindir}/run-on-bat
+%{_bindir}/%{name}
+%{_bindir}/%{name}-pd
+%{_bindir}/%{name}-stat
+%{_bindir}/%{name}ctl
+%{_bindir}/wifi
+%{_bindir}/wwan
 %exclude %{_bindir}/tlp-rdw
 %config(noreplace) %{_sysconfdir}/tlp.conf
 %config(noreplace) %{_sysconfdir}/tlp.d/00-template.conf
@@ -103,7 +114,13 @@ make install-man-rdw DESTDIR=%{buildroot}
 %{_unitdir}/../system-sleep
 %{_datadir}/metainfo/de.linrunner.tlp.metainfo.xml
 %doc %{_mandir}/man*/*
-%exclude %{_mandir}/man8/tlp-rdw*.8*
+%exclude %{_mandir}/man8/tlp-rdw*
+%{_datadir}/dbus-1/system-services/org.freedesktop.UPower.PowerProfiles.service
+%{_datadir}/dbus-1/system-services/net.hadess.PowerProfiles.service
+%{_datadir}/dbus-1/system.d/org.freedesktop.UPower.PowerProfiles.conf
+%{_datadir}/dbus-1/system.d/net.hadess.PowerProfiles.conf
+%{_datadir}/polkit-1/actions/tlp-pd.policy
+%{_localstatedir}/lib/tlp
 %doc AUTHORS README.rst changelog
 %license LICENSE COPYING
 
@@ -111,16 +128,17 @@ make install-man-rdw DESTDIR=%{buildroot}
 
 
 %files  rdw
+%doc AUTHORS README.rst changelog
+%license LICENSE COPYING
 %{_bindir}/tlp-rdw
 %{_datadir}/bash-completion/completions/tlp-rdw
 %{_datadir}/fish/vendor_completions.d/tlp-rdw.fish
+%{_datadir}/zsh/site-functions/_tlp-radio-device
 %{_datadir}/zsh/site-functions/_tlp-rdw
 %{_mandir}/man8/tlp-rdw*.8*
 %{_prefix}/lib/NetworkManager/dispatcher.d/99tlp-rdw-nm
 %{_udevrulesdir}/85-tlp-rdw.rules
 %{_udevrulesdir}/../tlp-rdw-udev
-%doc AUTHORS README.rst changelog
-%license LICENSE COPYING
 
 %post
 %systemd_post tlp.service
