@@ -1,5 +1,5 @@
 Name:		tlp
-Version:	1.9.0
+Version:	1.9.1
 Release:	1
 Source0:	https://github.com/linrunner/tlp/archive/%{version}/TLP-%{version}.tar.gz
 Summary:	Optimize Linux Laptop Battery Life
