@@ -1,5 +1,5 @@
 Name:		tlp
-Version:	1.10.1
+Version:	1.10.2
 Release:	1
 Source0:	https://github.com/linrunner/tlp/archive/%{version}/TLP-%{version}.tar.gz
 Summary:	Optimize Linux Laptop Battery Life
@@ -53,7 +53,7 @@ The Radio Device Wizard provides the capability to enable or disable
 builtin Bluetooth, Wi-Fi and WWAN devices triggered by certain events.
 
 %prep
-%autosetup -p1 -n TLP-%{version}
+%autosetup -p1 -n TLP-1.10.2
 
 %build
 %make_build
